@@ -459,7 +459,7 @@ def pay_choice(clientm, message):
 ➖➖➖➖➖➖➖➖➖
 Для приобретения выбранного товара, оплатите:
 ➖➖➖➖➖➖➖➖➖
-💸 <b>{ltc_amount} LTC</b>
+💸 <b>{round(ltc_amount, 6)} LTC</b>
 на Litecoin кошелек:
 <b>{ltc_address}</b>
 ➖➖➖➖➖➖➖➖➖
@@ -617,6 +617,28 @@ def pay_choice(clientm, message):
                 if is_int(check_status(message.from_user.id)):
                     cursor.execute("UPDATE clients SET state = (5) WHERE chat_id = (%s)", [message.from_user.id])
                     cursor.execute("UPDATE clients SET method = (10) WHERE chat_id = (%s)", [message.from_user.id])
+                    connection.commit()
+
+            elif message.text == '5':
+                bot.send_message(chat_id=message.chat.id, text=f'''
+🏠 Город: <b>{city}</b>
+🏃 Район: <b>{area}</b>
+🎁 Название: <b>{name}</b>
+💱 Метод оплаты: <b>Оплата с баланса</b>
+➖➖➖➖➖➖➖➖➖➖
+Для приобретения выбранного товара, отправьте любую цифру, что бы получить адрес.
+➖➖➖➖➖➖➖➖➖➖
+#⃣ <b>Заказ №{random.randint(51367, 99999)}</b>, запомните его.
+➖➖➖➖➖➖➖➖➖➖
+Для того, чтобы посмотреть последний Ваш заказ нажмите 👉 /lastorder
+➖➖➖➖➖➖➖➖➖➖
+Для пополнения баланса нажмите 👉/pay
+Для просмотра баланса нажмите 👉/balance
+Для просмотра истории операций по счету 👉/history
+Чтобы вернуться в меню и начать сначала нажмите 👉 /start или @''')
+                if is_int(check_status(message.from_user.id)):
+                    cursor.execute("UPDATE clients SET state = (5) WHERE chat_id = (%s)", [message.from_user.id])
+                    cursor.execute("UPDATE clients SET method = (5) WHERE chat_id = (%s)", [message.from_user.id])
                     connection.commit()
 
         else:
